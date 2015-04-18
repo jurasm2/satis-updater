@@ -12,8 +12,7 @@ use Nette\Utils\Strings;
  * Satis update script
  * -------------------
  * this script posts a content of composer.json file to specified app maintaining composer repositories
- *
- */
+  */
 class SatisUpdater extends AbstractService
 {
 	/**
