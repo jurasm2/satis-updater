@@ -1,5 +1,5 @@
 {
-    "name": "ludnegaard/satis-updater",
+    "name": "jurasm2/satis-updater",
     "description": "Bloody handy satis updater",
     "require": {
         "nette/nette": "~2.3.0",
