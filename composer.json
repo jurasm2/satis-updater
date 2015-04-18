@@ -1,0 +1,11 @@
+{
+    "name": "ludnegaard/satis-updater",
+    "description": "Bloody handy satis updater",
+    "require": {
+        "nette/nette": "~2.3.0",
+        "tracy/tracy": "*",
+        "symfony/console": "~2.6",
+        "nategood/httpful": "*",
+        "eloquent/composer-config-reader": "~2.0"
+    }
+}
