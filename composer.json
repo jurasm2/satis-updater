@@ -6,6 +6,7 @@
         "tracy/tracy": "*",
         "symfony/console": "~2.6",
         "nategood/httpful": "*",
-        "eloquent/composer-config-reader": "~2.0"
+        "eloquent/composer-config-reader": "~2.0",
+        "herrera-io/phar-update": "~1.0"
     }
 }

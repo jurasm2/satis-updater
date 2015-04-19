@@ -4,10 +4,10 @@ $autoloader = require __DIR__ . '/../vendor/autoload.php';
 // let composer autoload project's files
 $autoloader->add('', __DIR__);
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Application;
+use Eloquent\Composer\Configuration\ConfigurationReader;
+use SatisUpdater\Services\SatisUpdater;
+use SatisUpdater\Command;
 
 const APP_NAME = "
   ██████  ▄▄▄      ▄▄▄█████▓ ██▓  ██████     █    ██  ██▓███  ▓█████▄  ▄▄▄      ▄▄▄█████▓▓█████  ██▀███
@@ -24,35 +24,13 @@ Bloody handy satis updater
 ";
 
 /** @var \Symfony\Component\Console\Application $console */
-$console = new \Symfony\Component\Console\Application();
+$console = new Application(APP_NAME, '0.9.1');
 
-$console->setName(APP_NAME);
-$console->setVersion('1.0');
+// instantiate services
+$configurationReader = new ConfigurationReader();
+$satisUpdater = new SatisUpdater($configurationReader);
 
-
-$configurationReader = new \Eloquent\Composer\Configuration\ConfigurationReader();
-$satisUpdater = new \SatisUpdater\Services\SatisUpdater($configurationReader);
-
-$console
-	->register('update')
-	->setDefinition(array(
-		new InputArgument('composerJsonFile', InputArgument::REQUIRED, 'Satis repository name'),
-		new InputArgument('apiEndpoint', InputArgument::REQUIRED, 'Satis maintenance REST API endpoint'),
-		new InputOption('rewrite', 'r', InputOption::VALUE_NONE, 'This option causes rewriting of application\'s composer.json file. Use it wisely.')
-	))
-	->setDescription('Creates or updates composer repository via REST api')
-	->setCode(function (InputInterface $input, OutputInterface $output) use ($satisUpdater) {
-		$satisUpdater->setOutput($output);
-
-		// get sync manager
-		$composerJsonFile = $input->getArgument('composerJsonFile');
-		$apiEndpoint = $input->getArgument('apiEndpoint');
-		$rewrite = $input->getOption('rewrite');
-
-		$satisUpdater->setComposerJsonFile($composerJsonFile);
-		$satisUpdater->setApiEndpoint($apiEndpoint);
-		$satisUpdater->update($rewrite);
-	});
-
+$console->add(new Command\UpdateCommand($satisUpdater));
+$console->add(new Command\SelfUpdateCommand());
 
 return $console;
