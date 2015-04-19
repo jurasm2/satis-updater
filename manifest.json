@@ -1,8 +1,14 @@
 [
     {
         "name": "satis-update.phar",
-        "sha1": "6caff2c85642ddc4576c6e4400ace0c77373addf",
-        "url": "http://jurasm2.github.io/satis-updater/releases/satis-updater-79067fa.phar",
+        "sha1": "04e54c3f5f1793889187d2aec7367bfaa0a2170e",
+        "url": "http://jurasm2.github.io/satis-updater/releases/satis-updater-0.9.0.phar",
+        "version": "0.9.0"
+    },
+    {
+        "name": "satis-update.phar",
+        "sha1": "786f6bafbbc6594a6775f49013b748f75176af98",
+        "url": "http://jurasm2.github.io/satis-updater/releases/satis-updater-0.9.1.phar",
         "version": "0.9.1"
     }
 ]
