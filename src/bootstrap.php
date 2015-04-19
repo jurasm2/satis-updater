@@ -1,13 +1,13 @@
 <?php
 
+$autoloader = require __DIR__ . '/../vendor/autoload.php';
+// let composer autoload project's files
+$autoloader->add('', __DIR__);
+
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
-require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/services/AbstractService.php';
-require __DIR__ . '/services/SatisUpdater.php';
 
 const APP_NAME = "
   ██████  ▄▄▄      ▄▄▄█████▓ ██▓  ██████     █    ██  ██▓███  ▓█████▄  ▄▄▄      ▄▄▄█████▓▓█████  ██▀███

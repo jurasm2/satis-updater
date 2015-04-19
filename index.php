@@ -1,4 +1,4 @@
 <?php
 
-$console = require __DIR__ . '/app/bootstrap.php';
+$console = require __DIR__ . '/src/bootstrap.php';
 $console->run();
