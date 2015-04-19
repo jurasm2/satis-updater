@@ -84,7 +84,6 @@ class SatisUpdater extends AbstractService
 					// with occasionally modified 'repositories' section
 					$newComposerJsonContent = $response->body->{'generated-files'}->{'composer.json'}->{'content'};
 					// $newComposerJsonContent is pretty printed string
-					//print_r($newComposerJsonContent);
 					FileSystem::write($this->composerJsonFile, $newComposerJsonContent);
 				}
 			}

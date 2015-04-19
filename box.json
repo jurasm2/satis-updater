@@ -1,0 +1,17 @@
+{
+	"chmod": "0755",
+	"directories": [
+		"app"
+	],
+	"finder": [
+		{
+			"name": ["*.php", "*.json"],
+			"exclude": ["Tests"],
+			"in": "vendor"
+		}
+	],
+	"git-version": "package_version",
+	"main": "bin/satis-updater",
+	"output": "satis-updater.phar",
+	"stub": true
+}

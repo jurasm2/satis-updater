@@ -1,23 +1,58 @@
 <?php
 
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+
 require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/services/AbstractService.php';
+require __DIR__ . '/services/SatisUpdater.php';
+
+const APP_NAME = "
+  ██████  ▄▄▄      ▄▄▄█████▓ ██▓  ██████     █    ██  ██▓███  ▓█████▄  ▄▄▄      ▄▄▄█████▓▓█████  ██▀███
+▒██    ▒ ▒████▄    ▓  ██▒ ▓▒▓██▒▒██    ▒     ██  ▓██▒▓██░  ██▒▒██▀ ██▌▒████▄    ▓  ██▒ ▓▒▓█   ▀ ▓██ ▒ ██▒
+░ ▓██▄   ▒██  ▀█▄  ▒ ▓██░ ▒░▒██▒░ ▓██▄      ▓██  ▒██░▓██░ ██▓▒░██   █▌▒██  ▀█▄  ▒ ▓██░ ▒░▒███   ▓██ ░▄█ ▒
+  ▒   ██▒░██▄▄▄▄██ ░ ▓██▓ ░ ░██░  ▒   ██▒   ▓▓█  ░██░▒██▄█▓▒ ▒░▓█▄   ▌░██▄▄▄▄██ ░ ▓██▓ ░ ▒▓█  ▄ ▒██▀▀█▄
+▒██████▒▒ ▓█   ▓██▒  ▒██▒ ░ ░██░▒██████▒▒   ▒▒█████▓ ▒██▒ ░  ░░▒████▓  ▓█   ▓██▒  ▒██▒ ░ ░▒████▒░██▓ ▒██▒
+▒ ▒▓▒ ▒ ░ ▒▒   ▓▒█░  ▒ ░░   ░▓  ▒ ▒▓▒ ▒ ░   ░▒▓▒ ▒ ▒ ▒▓▒░ ░  ░ ▒▒▓  ▒  ▒▒   ▓▒█░  ▒ ░░   ░░ ▒░ ░░ ▒▓ ░▒▓░
+░ ░▒  ░ ░  ▒   ▒▒ ░    ░     ▒ ░░ ░▒  ░ ░   ░░▒░ ░ ░ ░▒ ░      ░ ▒  ▒   ▒   ▒▒ ░    ░     ░ ░  ░  ░▒ ░ ▒░
+░  ░  ░    ░   ▒     ░       ▒ ░░  ░  ░      ░░░ ░ ░ ░░        ░ ░  ░   ░   ▒     ░         ░     ░░   ░
+      ░        ░  ░          ░        ░        ░                 ░          ░  ░            ░  ░   ░
+                                                               ░
+Bloody handy satis updater
+";
+
+/** @var \Symfony\Component\Console\Application $console */
+$console = new \Symfony\Component\Console\Application();
+
+$console->setName(APP_NAME);
+$console->setVersion('1.0');
 
 
-$configurator = new Nette\Configurator;
+$configurationReader = new \Eloquent\Composer\Configuration\ConfigurationReader();
+$satisUpdater = new \SatisUpdater\Services\SatisUpdater($configurationReader);
 
-$configurator->setDebugMode(TRUE); // enable for your remote IP
-Tracy\Debugger::$showLocation = true;
-$configurator->enableDebugger(__DIR__ . '/../log');
+$console
+	->register('update')
+	->setDefinition(array(
+		new InputArgument('composerJsonFile', InputArgument::REQUIRED, 'Satis repository name'),
+		new InputArgument('apiEndpoint', InputArgument::REQUIRED, 'Satis maintenance REST API endpoint'),
+		new InputOption('rewrite', 'r', InputOption::VALUE_NONE, 'This option causes rewriting of application\'s composer.json file. Use it wisely.')
+	))
+	->setDescription('Creates or updates composer repository via REST api')
+	->setCode(function (InputInterface $input, OutputInterface $output) use ($satisUpdater) {
+		$satisUpdater->setOutput($output);
 
-$configurator->setTempDirectory(__DIR__ . '/../temp');
+		// get sync manager
+		$composerJsonFile = $input->getArgument('composerJsonFile');
+		$apiEndpoint = $input->getArgument('apiEndpoint');
+		$rewrite = $input->getOption('rewrite');
 
-$configurator->createRobotLoader()
-	->addDirectory(__DIR__)
-	->register();
+		$satisUpdater->setComposerJsonFile($composerJsonFile);
+		$satisUpdater->setApiEndpoint($apiEndpoint);
+		$satisUpdater->update($rewrite);
+	});
 
-$configurator->addConfig(__DIR__ . '/config/config.neon');
-$configurator->addConfig(__DIR__ . '/config/config.local.neon');
 
-$container = $configurator->createContainer();
-
-return $container;
+return $console;
