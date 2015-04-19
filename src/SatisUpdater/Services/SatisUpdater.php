@@ -10,7 +10,6 @@ use Nette\Utils\Strings;
 
 /**
  * Satis update script
- * -------------------
  * this script posts a content of composer.json file to specified app maintaining composer repositories
   */
 class SatisUpdater extends AbstractService
@@ -85,7 +84,6 @@ class SatisUpdater extends AbstractService
 					// with occasionally modified 'repositories' section
 					$newComposerJsonContent = $response->body->{'generated-files'}->{'composer.json'}->{'content'};
 					// $newComposerJsonContent is pretty printed string
-					//print_r($newComposerJsonContent);
 					FileSystem::write($this->composerJsonFile, $newComposerJsonContent);
 				}
 			}

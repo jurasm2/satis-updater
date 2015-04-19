@@ -2,10 +2,11 @@
     "name": "jurasm2/satis-updater",
     "description": "Bloody handy satis updater",
     "require": {
-        "nette/nette": "~2.3.0",
+        "nette/utils": "~2.3.0",
         "tracy/tracy": "*",
         "symfony/console": "~2.6",
         "nategood/httpful": "*",
-        "eloquent/composer-config-reader": "~2.0"
+        "eloquent/composer-config-reader": "~2.0",
+        "herrera-io/phar-update": "~1.0"
     }
 }
