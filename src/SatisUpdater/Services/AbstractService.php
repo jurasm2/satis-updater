@@ -31,4 +31,12 @@ abstract class AbstractService extends Object
 		}
 	}
 
+	/**
+	 * @param $response
+	 */
+	protected function dumpResponseDebug($response)
+	{
+		\Tracy\Debugger::dump($response->body->{'debug'});
+	}
+
 }
