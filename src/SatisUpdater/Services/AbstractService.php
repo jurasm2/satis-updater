@@ -30,13 +30,4 @@ abstract class AbstractService extends Object
 			$this->output->writeln($message);
 		}
 	}
-
-	/**
-	 * @param $response
-	 */
-	protected function dumpResponseDebug($response)
-	{
-		\Tracy\Debugger::dump($response->body->{'debug'});
-	}
-
 }

@@ -100,9 +100,6 @@ class SatisUpdater extends AbstractService
 			->sendsJson()
 			->send();
 
-//		$this->dumpResponseDebug($response);
-//		die();
-
 		$this->output->writeln('<info>Responded with return code ' . $response->code . '</info>');
 
 		if ($response->code != 200) {
@@ -118,10 +115,6 @@ class SatisUpdater extends AbstractService
 			// $newComposerJsonContent is pretty printed string
 			FileSystem::write($this->composerJsonFile, $newComposerJsonContent);
 		}
-
-		$this->output->writeln('<info>Generating ' . $this->satisJsonFile . '</info>');
-		$satisJsonContent = $response->body->{'generated-files'}->{'satis.json'}->{'content'};
-		FileSystem::write($this->satisJsonFile, $satisJsonContent);
 	}
 
 
