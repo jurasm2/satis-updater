@@ -5,27 +5,16 @@ use SatisUpdater\Services\SatisUpdater;
 use Symfony\Component\Console\Command\Command as ConsoleCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * UpdateCommand
  * @package SatisUpdater\Commands
  */
-class UpdateCommand extends ConsoleCommand
+class UpdateCommand extends AbstractSatisCommand
 {
-	/**
-	 * @var SatisUpdater
-	 */
-	protected $satisUpdater;
 
-	/**
-	 * Constructor
-	 * @param SatisUpdater $satisUpdater
-	 */
-	public function __construct(SatisUpdater $satisUpdater)
-	{
-		parent::__construct();
-		$this->satisUpdater = $satisUpdater;
-	}
 
 	protected function configure()
 	{
@@ -50,6 +39,14 @@ class UpdateCommand extends ConsoleCommand
 
 		$this->satisUpdater->setComposerJsonFile($composerJsonFile);
 		$this->satisUpdater->setApiEndpoint($apiEndpoint);
-		$this->satisUpdater->update($rewrite);
+
+		$returnCode = 0;
+		try {
+			$this->satisUpdater->update($rewrite);
+		} catch(\Exception $ex) {
+			$returnCode = $ex->getCode();
+		}
+
+		return $returnCode;
 	}
 }

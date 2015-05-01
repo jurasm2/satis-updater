@@ -30,6 +30,7 @@ $console = new Application(APP_NAME, '0.9.1');
 $configurationReader = new ConfigurationReader();
 $satisUpdater = new SatisUpdater($configurationReader);
 
+$console->add(new Command\CreateCommand($satisUpdater));
 $console->add(new Command\UpdateCommand($satisUpdater));
 $console->add(new Command\SelfUpdateCommand());
 
